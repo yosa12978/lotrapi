@@ -1,0 +1,35 @@
+version: '3'
+services:
+  api:
+    container_name: lotrapi-api
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+  postgres:
+    container_name: lotrapi-postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+    volumes:
+      - /postgres-volume:/var/lib/postgresql/data
+  adminer:
+    container_name: lotrapi-adminer
+    image: adminer
+    ports:
+      - "5050:8080"
+    networks:
+      - mainnet
+    
+networks:
+  mainnet:
+    driver: bridge
+
+volumes:
+  postgres-volume:
